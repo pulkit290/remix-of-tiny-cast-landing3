@@ -4,7 +4,7 @@ services:
     runtime: docker
     rootDir: worker
     dockerfilePath: ./Dockerfile
-    plan: starter
+    plan: free
     envVars:
       - key: WORKER_SECRET
         sync: false
