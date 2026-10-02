@@ -50,20 +50,22 @@ function Landing() {
   return (
     <div className="min-h-screen bg-sun p-3 md:p-6">
       <div className="relative overflow-hidden rounded-[2rem] bg-ink text-paper">
-        <div aria-hidden className="pointer-events-none absolute left-1/2 top-[-30%] h-[1400px] w-[1400px] -translate-x-1/2 rounded-full opacity-25"
-          style={{ background: "repeating-radial-gradient(circle, transparent 0 58px, var(--paper) 58px 60px)" }} />
+        <div aria-hidden data-parallax="0.35" className="pointer-events-none absolute inset-x-0 top-[-30%]">
+          <div className="mx-auto h-[1400px] w-[1400px] rounded-full opacity-25"
+            style={{ background: "repeating-radial-gradient(circle, transparent 0 58px, var(--paper) 58px 60px)" }} />
+        </div>
 
-        <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+        <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-6 sm:py-6">
           <Logo />
           <nav className="hidden items-center gap-7 rounded-full bg-paper px-7 py-2.5 text-xs font-bold uppercase text-ink md:flex">
-            <a href="#how">How it works</a><a href="#records">What you get</a><Link to="/about">About</Link><Link to="/login">Sign in</Link>
+            <a href="#how" className="story-link">How it works</a><a href="#records" className="story-link">What you get</a><Link to="/about" className="story-link">About</Link><Link to="/login" className="story-link">Sign in</Link>
           </nav>
           <Link to="/signup" className="press rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase text-primary-foreground">Get started</Link>
         </header>
 
         <section className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-14 text-center">
           <p className="reveal font-mono text-xs uppercase tracking-[0.25em] text-primary">Multi-user AI testing</p>
-          <h1 className="reveal reveal-1 mt-4 text-6xl leading-[0.95] md:text-8xl">Put AI users<br />inside your app</h1>
+          <h1 className="reveal reveal-1 mt-4 text-5xl leading-[0.95] sm:text-6xl md:text-8xl">Put AI users<br />inside your app</h1>
           <p className="reveal reveal-2 mx-auto mt-6 max-w-lg text-paper/75">
             Poolabs launches multiple autonomous AI users in separate browser sessions and makes them interact with your application — and with each other — like real customers.
           </p>
@@ -76,7 +78,7 @@ function Landing() {
 
         <section className="relative z-10 mx-auto max-w-5xl px-6 pb-24">
           <p className="reveal text-center font-mono text-xs uppercase tracking-[0.3em] text-primary">Why multi-user testing</p>
-          <h2 className="reveal reveal-1 mx-auto mt-4 max-w-3xl text-center text-5xl leading-none md:text-6xl">Most bugs only show up when two people use your app at once</h2>
+          <h2 className="reveal reveal-1 mx-auto mt-4 max-w-3xl text-center text-4xl leading-none sm:text-5xl md:text-6xl">Most bugs only show up when two people use your app at once</h2>
           <div className="mt-14 grid gap-10 border-t border-paper/15 pt-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-paper/15">
             {[
               ["Real browsers, side by side", "Each AI user gets its own isolated browser session with its own cookies and login, so a host and a guest really are two different people to your app."],
@@ -94,10 +96,10 @@ function Landing() {
 
         <div className="relative z-10 mx-2 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-14 text-ink md:mx-10">
           <section id="how" className="mx-auto max-w-5xl">
-            <h2 className="text-5xl">How it works</h2>
+            <h2 data-reveal className="text-4xl sm:text-5xl">How it works</h2>
             <ol className="relative mt-10 space-y-8 border-l-4 border-accent pl-8">
               {steps.map((s, i) => (
-                <li key={s} className={`reveal reveal-${Math.min(i, 3)} relative`}>
+                <li key={s} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }} className="relative">
                   <span className="absolute -left-[3.05rem] top-0 flex h-9 w-9 items-center justify-center rounded-full bg-ink font-display text-lg text-primary">{i + 1}</span>
                   <p className="text-xl font-semibold">{s}</p>
                 </li>
@@ -113,7 +115,7 @@ function Landing() {
 
             <div className="mt-10 grid gap-4 md:grid-cols-4 md:grid-rows-2">
               {/* Feature tile */}
-              <article className="reveal group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-ink bg-sun p-7 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1 md:col-span-2 md:row-span-2 md:p-9">
+              <article data-reveal className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-ink bg-sun p-7 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1.5 hover:rotate-[-0.4deg] active:scale-[0.99] md:col-span-2 md:row-span-2 md:p-9">
                 <div>
                   <Sticker icon={ListOrdered} className="bg-ink text-sun" />
                   <h3 className="mt-6 text-5xl leading-[0.9] md:text-6xl">Action<br />timeline</h3>
@@ -135,7 +137,7 @@ function Landing() {
                 { r: records[3]!, icon: Bug, tone: "bg-pop-pink text-ink", sticker: "bg-ink text-pop-pink" },
                 { r: records[4]!, icon: FileText, tone: "bg-paper text-ink", sticker: "bg-ink text-sun" },
               ].map(({ r, icon, tone, sticker }, i) => (
-                <article key={r[0]} className={`reveal reveal-${i + 1} group flex flex-col rounded-3xl border-2 border-ink p-6 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1 ${tone}`}>
+                <article key={r[0]} data-reveal style={{ ["--d" as string]: `${(i + 1) * 0.08}s` }} className={`group flex flex-col rounded-3xl border-2 border-ink p-6 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1.5 hover:rotate-[-0.4deg] active:scale-[0.99] ${tone}`}>
                   <div className="flex items-start justify-between">
                     <Sticker icon={icon} className={sticker} />
                     <span className="font-mono text-xs opacity-60">0{i + 2}</span>
@@ -153,7 +155,7 @@ function Landing() {
                 [Server, "Runs on your worker", <>Browsers run in a separate Node + Playwright service you deploy. It authenticates to Poolabs with a shared secret.</>, "bg-pop-purple text-paper", "bg-paper text-pop-purple"],
                 [KeyRound, "Passwords stay with you", <>Only test account emails are saved here. Passwords never leave your worker. <Link to="/security" className="font-semibold underline underline-offset-4">Read about security</Link>.</>, "bg-pop-green text-ink", "bg-ink text-pop-green"],
               ].map(([Icon, t, d, tone, sticker], i) => (
-                <article key={t as string} className={`reveal reveal-${i + 1} flex items-start gap-5 rounded-3xl border-2 border-ink p-7 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1 ${tone as string}`}>
+                <article key={t as string} data-reveal style={{ ["--d" as string]: `${i * 0.1}s` }} className={`flex items-start gap-5 rounded-3xl border-2 border-ink p-7 shadow-[6px_6px_0_0_var(--ink)] transition-transform duration-300 hover:-translate-y-1.5 hover:rotate-[-0.4deg] active:scale-[0.99] ${tone as string}`}>
                   <Sticker icon={Icon as typeof Server} className={sticker as string} />
                   <div>
                     <h3 className="text-3xl leading-[0.95]">{t as string}</h3>
@@ -165,7 +167,7 @@ function Landing() {
           </section>
 
           <section className="mx-auto mt-20 max-w-3xl">
-            <h2 className="text-5xl">Questions</h2>
+            <h2 data-reveal className="text-4xl sm:text-5xl">Questions</h2>
             <div className="mt-6 divide-y-2 divide-ink border-y-2 border-ink">
               {faq.map(([q, a]) => (
                 <details key={q} className="group py-4">
