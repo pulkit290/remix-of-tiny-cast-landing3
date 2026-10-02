@@ -69,27 +69,31 @@ function AppLayout() {
     return <div className="flex min-h-screen items-center justify-center font-mono text-xs text-muted-foreground">Loading…</div>;
   }
 
+  const links = (mobile: boolean) =>
+    nav.map((n) => (
+      <Link
+        key={n.to}
+        to={n.to}
+        className={`press rounded-full px-4 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground ${mobile ? "flex-1 px-2" : ""}`}
+        activeProps={{ className: "!bg-primary !text-primary-foreground font-semibold" }}
+      >
+        {n.label}
+      </Link>
+    ));
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:gap-8 sm:px-6 md:px-10">
           <Link to="/dashboard" className="shrink-0"><Logo /></Link>
-          <nav className="fixed inset-x-3 bottom-3 z-50 flex items-center justify-around gap-1 rounded-full border bg-popover/90 p-1.5 shadow-2xl backdrop-blur-xl md:static md:inset-auto md:justify-start md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
-            {nav.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                className="press flex-1 rounded-full px-4 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:flex-none"
-                activeProps={{ className: "!bg-primary !text-primary-foreground font-semibold" }}
-              >
-                {n.label}
-              </Link>
-            ))}
-          </nav>
+          <nav className="hidden items-center gap-1 md:flex">{links(false)}</nav>
           <div className="ml-auto"><AccountMenu email={user.email ?? "?"} /></div>
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 sm:pt-10 md:px-10 md:pb-16"><Outlet /></main>
+      <nav className="fixed inset-x-3 bottom-3 z-40 flex items-center gap-1 rounded-full border bg-popover/90 p-1.5 shadow-2xl backdrop-blur-xl md:hidden">
+        {links(true)}
+      </nav>
     </div>
   );
 }
