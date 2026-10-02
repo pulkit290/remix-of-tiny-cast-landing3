@@ -40,7 +40,7 @@ export function useScrollFx() {
         frame = 0;
         const y = window.scrollY;
         document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {
-          const speed = Number(el.dataset.parallax) || 0.2;
+          const speed = Number(el.dataset["parallax"]) || 0.2;
           el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
         });
       });
