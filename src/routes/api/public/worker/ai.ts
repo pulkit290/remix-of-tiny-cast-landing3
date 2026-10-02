@@ -25,17 +25,29 @@ export const Route = createFileRoute("/api/public/worker/ai")({
         if (!parsed.success) return Response.json({ error: "Invalid request" }, { status: 400 });
         const key = process.env["LOVABLE_API_KEY"];
         if (!key) return Response.json({ error: "AI not configured" }, { status: 500 });
-        const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        const r = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
           method: "POST",
-          headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
-          body: JSON.stringify({ model: "google/gemini-2.5-flash", messages: parsed.data.messages, response_format: { type: "json_object" } }),
+          headers: { "content-type": "application/json", "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch" },
+          body: JSON.stringify({
+            model: "openai/gpt-6-astra",
+            input: parsed.data.messages,
+            store: false,
+            reasoning: { effort: "low" },
+            text: { format: { type: "json_object" } },
+          }),
         });
         if (!r.ok) {
           const msg = r.status === 429 ? "AI rate limited" : r.status === 402 ? "AI credits exhausted" : `AI request failed (${r.status})`;
           return Response.json({ error: msg }, { status: r.status });
         }
-        const j = (await r.json()) as { choices?: { message?: { content?: string } }[] };
-        return Response.json({ content: j.choices?.[0]?.message?.content ?? "" });
+        const j = (await r.json()) as { output?: { type: string; content?: { type: string; text?: string }[] }[] };
+        const content = (j.output ?? [])
+          .filter((o) => o.type === "message")
+          .flatMap((o) => o.content ?? [])
+          .filter((c) => c.type === "output_text")
+          .map((c) => c.text ?? "")
+          .join("");
+        return Response.json({ content });
       },
     },
   },
