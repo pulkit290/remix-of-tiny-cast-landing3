@@ -138,29 +138,48 @@ export const suggestAgents = createServerFn({ method: "POST" })
     if (error || !project) throw new Error("Project not found");
     const key = process.env["LOVABLE_API_KEY"];
     if (!key) throw new Error("AI is not configured for this project.");
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
       method: "POST",
-      headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
+      headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch", "content-type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: "You design multi-user browser test casts. Each AI user gets a short name, a lowercase role, and one concrete, verifiable goal that depends on the other users where possible. Never invent test account credentials." },
+        model: "openai/gpt-6-astra",
+        store: false,
+        stream: true,
+        reasoning: { effort: "medium" },
+        text: { format: { type: "json_object" } },
+        input: [
+          { role: "system", content: "You design multi-user browser test casts. Each AI user gets a short name, a lowercase role, and one concrete, verifiable goal that depends on the other users where possible. Goals must say exactly what to do and what visible result proves success, with no extra steps. Never invent test account credentials. Reply ONLY with JSON: {\"users\":[{\"name\":\"\",\"role\":\"\",\"goal\":\"\",\"system_instructions\":\"\"}]}" },
           { role: "user", content: `App: ${project.name} (${project.app_url}). ${project.description ?? ""}\nWhat to test: ${data.description || "the core multi-user flow"}\nCreate exactly ${data.count} AI users.` },
         ],
-        tools: [{ type: "function", function: { name: "cast", parameters: {
-          type: "object", required: ["users"],
-          properties: { users: { type: "array", items: { type: "object", required: ["name", "role", "goal"],
-            properties: { name: { type: "string" }, role: { type: "string" }, goal: { type: "string" }, system_instructions: { type: "string" } } } } },
-        } } }],
-        tool_choice: { type: "function", function: { name: "cast" } },
       }),
     });
     if (res.status === 429) throw new Error("AI is rate limited right now. Try again in a minute.");
     if (res.status === 402) throw new Error("AI credits are used up. Add credits in workspace settings.");
-    if (!res.ok) { console.error("ai error", res.status, await res.text()); throw new Error("AI could not suggest users."); }
-    const json = await res.json();
-    const args = json.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
-    const parsed = z.object({ users: z.array(AgentSuggestion).min(1) }).safeParse(args ? JSON.parse(args) : null);
+    if (!res.ok || !res.body) { console.error("ai error", res.status, await res.text()); throw new Error("AI could not suggest users."); }
+    let content = "", buf = "";
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let nl;
+      while ((nl = buf.indexOf("\n")) >= 0) {
+        const line = buf.slice(0, nl).trim();
+        buf = buf.slice(nl + 1);
+        if (!line.startsWith("data:")) continue;
+        const payload = line.slice(5).trim();
+        if (!payload || payload === "[DONE]") continue;
+        try {
+          const ev = JSON.parse(payload) as { type?: string; delta?: string };
+          if (ev.type === "response.output_text.delta" && ev.delta) content += ev.delta;
+          if (ev.type === "response.failed" || ev.type === "error") throw new Error("AI could not suggest users.");
+        } catch (e) { if (e instanceof Error && e.message.startsWith("AI")) throw e; }
+      }
+    }
+    let json: unknown = null;
+    try { json = JSON.parse(content); } catch { /* handled below */ }
+    const parsed = z.object({ users: z.array(AgentSuggestion).min(1) }).safeParse(json);
     if (!parsed.success) throw new Error("AI returned an unusable answer. Try again.");
     return { users: parsed.data.users.slice(0, data.count) };
   });

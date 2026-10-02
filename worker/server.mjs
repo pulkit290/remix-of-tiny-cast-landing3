@@ -106,7 +106,10 @@ async function decide(agent, job, obs, history, board) {
       `Scenario: ${job.scenario?.name ?? ""} ${job.scenario?.description ?? ""}\n` +
       `Reply ONLY with JSON: {"action":"click|fill|select|press|goto|wait|done|fail","id":"<element id>","value":"<text>","reason":"<short>"}. ` +
       `"press" sends a key (value e.g. "Enter", "Tab", "Escape") to the element id, or to the page if no id — use it to submit inputs that have no button. ` +
-      `Use "done" when your goal is verifiably achieved, "fail" if it is impossible (explain in reason). "wait" if waiting for another user.` },
+      `Use "done" when your goal is verifiably achieved, "fail" if it is impossible (explain in reason). "wait" if waiting for another user.\n` +
+      `Rules: do ONLY what your goal asks — no extra steps (don't complete, delete or edit things the goal doesn't mention). ` +
+      `Before "done", confirm from the current page text that every part of the goal is visibly true, and quote that evidence in reason. ` +
+      `If your last step errored or changed nothing, try a different approach instead of repeating it. Never invent credentials.` },
     { role: "user", content:
       `URL: ${obs.url}\nTitle: ${obs.title}\nOther users recently:\n${others}\nYour last steps:\n${history.slice(-8).join("\n") || "none"}\n` +
       `Page text:\n${obs.text}\nInteractive elements:\n${JSON.stringify(obs.elements)}` },

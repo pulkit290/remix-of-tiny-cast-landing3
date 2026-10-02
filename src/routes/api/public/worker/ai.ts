@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/public/worker/ai")({
             input: parsed.data.messages,
             store: false,
             stream: true,
-            reasoning: { effort: "low" },
+            reasoning: { effort: "medium" },
             text: { format: { type: "json_object" } },
           }),
         });
