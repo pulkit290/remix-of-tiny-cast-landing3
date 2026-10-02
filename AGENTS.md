@@ -11,6 +11,7 @@
 
 # Architecture rules
 - Browser automation runs in the separate Node service in `worker/`, never in the app — the app's server runtime can't run Playwright.
+- The worker gets AI decisions from the app's `/api/public/worker/ai` (WORKER_SECRET-auth, built-in AI gateway) unless it has its own LLM key — so deploying the worker needs only one shared secret.
 - App starts runs via `startRun` server fn → POST `${BROWSER_WORKER_URL}/runs`; worker reports back to `/api/public/worker/events` with `WORKER_SECRET` — single write path for run data.
 - Missing/unreachable worker marks the run failed with "Browser worker unavailable…" — never simulate results.
 - Authenticated pages live under `src/routes/_authenticated/` (client-only gate) and read data via the browser client with RLS.
