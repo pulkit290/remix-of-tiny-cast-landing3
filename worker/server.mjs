@@ -104,7 +104,8 @@ async function decide(agent, job, obs, history, board) {
       (agent.instructions ? `Instructions: ${agent.instructions}\n` : "") +
       (agent.accountEmail ? `Your account email: ${agent.accountEmail}. For a password field, use value "{{PASSWORD}}".\n` : "") +
       `Scenario: ${job.scenario?.name ?? ""} ${job.scenario?.description ?? ""}\n` +
-      `Reply ONLY with JSON: {"action":"click|fill|select|goto|wait|done|fail","id":"<element id>","value":"<text>","reason":"<short>"}. ` +
+      `Reply ONLY with JSON: {"action":"click|fill|select|press|goto|wait|done|fail","id":"<element id>","value":"<text>","reason":"<short>"}. ` +
+      `"press" sends a key (value e.g. "Enter", "Tab", "Escape") to the element id, or to the page if no id — use it to submit inputs that have no button. ` +
       `Use "done" when your goal is verifiably achieved, "fail" if it is impossible (explain in reason). "wait" if waiting for another user.` },
     { role: "user", content:
       `URL: ${obs.url}\nTitle: ${obs.title}\nOther users recently:\n${others}\nYour last steps:\n${history.slice(-8).join("\n") || "none"}\n` +
@@ -167,6 +168,10 @@ async function runAgent(browser, job, agent, board, report) {
         if (d.action === "click" && el) await el.click({ timeout: 8000 });
         else if (d.action === "fill" && el) await el.fill(d.value === "{{PASSWORD}}" ? (pw ?? "") : String(d.value ?? ""), { timeout: 8000 });
         else if (d.action === "select" && el) await el.selectOption(String(d.value ?? ""), { timeout: 8000 });
+        else if (d.action === "press") {
+          const key = String(d.value || "Enter");
+          if (el) await el.press(key, { timeout: 8000 }); else await page.keyboard.press(key);
+        }
         else if (d.action === "goto" && d.value) await page.goto(new URL(d.value, job.appUrl).toString(), { waitUntil: "domcontentloaded" });
         else if (d.action === "wait") await page.waitForTimeout(3000);
         else result = "invalid action";
