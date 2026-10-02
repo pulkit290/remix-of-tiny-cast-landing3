@@ -32,6 +32,7 @@ export const Route = createFileRoute("/api/public/worker/ai")({
             model: "openai/gpt-6-astra",
             input: parsed.data.messages,
             store: false,
+            stream: true,
             reasoning: { effort: "low" },
             text: { format: { type: "json_object" } },
           }),
@@ -40,13 +41,30 @@ export const Route = createFileRoute("/api/public/worker/ai")({
           const msg = r.status === 429 ? "AI rate limited" : r.status === 402 ? "AI credits exhausted" : `AI request failed (${r.status})`;
           return Response.json({ error: msg }, { status: r.status });
         }
-        const j = (await r.json()) as { output?: { type: string; content?: { type: string; text?: string }[] }[] };
-        const content = (j.output ?? [])
-          .filter((o) => o.type === "message")
-          .flatMap((o) => o.content ?? [])
-          .filter((c) => c.type === "output_text")
-          .map((c) => c.text ?? "")
-          .join("");
+        // Stream and accumulate the answer text (avoids buffered timeouts).
+        let content = "", buf = "";
+        const reader = r.body!.getReader();
+        const dec = new TextDecoder();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+          let nl;
+          while ((nl = buf.indexOf("\n")) >= 0) {
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl + 1);
+            if (!line.startsWith("data:")) continue;
+            const payload = line.slice(5).trim();
+            if (!payload || payload === "[DONE]") continue;
+            try {
+              const ev = JSON.parse(payload) as { type?: string; delta?: string; response?: { error?: { message?: string } } };
+              if (ev.type === "response.output_text.delta" && ev.delta) content += ev.delta;
+              if (ev.type === "response.failed" || ev.type === "error") {
+                return Response.json({ error: ev.response?.error?.message ?? "AI request failed" }, { status: 502 });
+              }
+            } catch { /* partial frame */ }
+          }
+        }
         return Response.json({ content });
       },
     },
