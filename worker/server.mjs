@@ -42,10 +42,6 @@ function reporter(callbackUrl) {
 
 async function runJob(job) {
   const report = reporter(job.callbackUrl);
-  if (!LLM_KEY) {
-    await report({ type: "run_status", runId: job.runId, status: "error", failureReason: "AI model is not configured on the browser worker." });
-    return;
-  }
   await report({ type: "run_status", runId: job.runId, status: "running" });
   let browser;
   try {
@@ -114,13 +110,24 @@ async function decide(agent, job, obs, history, board) {
       `URL: ${obs.url}\nTitle: ${obs.title}\nOther users recently:\n${others}\nYour last steps:\n${history.slice(-8).join("\n") || "none"}\n` +
       `Page text:\n${obs.text}\nInteractive elements:\n${JSON.stringify(obs.elements)}` },
   ];
-  const r = await fetch(`${LLM_URL}/chat/completions`, {
-    method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${LLM_KEY}` },
-    body: JSON.stringify({ model: MODEL, messages, response_format: { type: "json_object" } }),
-  });
-  if (!r.ok) throw new Error(`AI model request failed (${r.status})`);
-  const j = await r.json();
-  return JSON.parse(j.choices[0].message.content);
+  let content;
+  if (LLM_KEY) {
+    const r = await fetch(`${LLM_URL}/chat/completions`, {
+      method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${LLM_KEY}` },
+      body: JSON.stringify({ model: MODEL, messages, response_format: { type: "json_object" } }),
+    });
+    if (!r.ok) throw new Error(`AI model request failed (${r.status})`);
+    content = (await r.json()).choices[0].message.content;
+  } else {
+    // Default: ask the Poolabs app, which uses its built-in AI. No key needed here.
+    const r = await fetch(new URL("/api/public/worker/ai", job.callbackUrl), {
+      method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${SECRET}` },
+      body: JSON.stringify({ messages }),
+    });
+    if (!r.ok) throw new Error(`AI request failed (${r.status})`);
+    content = (await r.json()).content;
+  }
+  return JSON.parse(String(content).replace(/^```(?:json)?\s*|\s*```$/g, ""));
 }
 
 async function runAgent(browser, job, agent, board, report) {
