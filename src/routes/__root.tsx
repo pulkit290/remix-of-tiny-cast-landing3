@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { CookieBanner } from "@/components/cookie-banner";
+import { useScrollFx } from "@/hooks/use-scroll-fx";
 
 function NotFoundComponent() {
   return (
@@ -122,6 +123,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useScrollFx();
+
 
   return (
     <QueryClientProvider client={queryClient}>
