@@ -72,15 +72,15 @@ function AppLayout() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-10 px-6 md:px-10">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:gap-8 sm:px-6 md:px-10">
           <Link to="/dashboard" className="shrink-0"><Logo /></Link>
-          <nav className="-mb-px flex h-16 items-stretch gap-7 overflow-x-auto">
+          <nav className="fixed inset-x-3 bottom-3 z-50 flex items-center justify-around gap-1 rounded-full border bg-popover/90 p-1.5 shadow-2xl backdrop-blur-xl md:static md:inset-auto md:justify-start md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
             {nav.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
-                className="flex items-center border-b-2 border-transparent text-sm text-muted-foreground transition-colors hover:text-foreground"
-                activeProps={{ className: "!border-primary !text-foreground" }}
+                className="press flex-1 rounded-full px-4 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:flex-none"
+                activeProps={{ className: "!bg-primary !text-primary-foreground font-semibold" }}
               >
                 {n.label}
               </Link>
@@ -89,7 +89,7 @@ function AppLayout() {
           <div className="ml-auto"><AccountMenu email={user.email ?? "?"} /></div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-6 py-12 md:px-10 md:py-16"><Outlet /></main>
+      <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 sm:pt-10 md:px-10 md:pb-16"><Outlet /></main>
     </div>
   );
 }
