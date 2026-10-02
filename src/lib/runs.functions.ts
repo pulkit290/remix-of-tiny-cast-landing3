@@ -46,7 +46,8 @@ export const startRun = createServerFn({ method: "POST" })
     const workerSecret = process.env["WORKER_SECRET"];
     if (!workerUrl || !workerSecret) return fail(NOT_CONFIGURED);
 
-    const origin = new URL(getRequest().url).origin;
+    // The worker runs elsewhere, so it must call back to a publicly reachable app URL.
+    const origin = (process.env["PUBLIC_APP_URL"] || new URL(getRequest().url).origin).replace(/\/$/, "");
     const payload = {
       runId: run.id,
       appUrl: (scenario.projects as { app_url: string } | null)?.app_url,
