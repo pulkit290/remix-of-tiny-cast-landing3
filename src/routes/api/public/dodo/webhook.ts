@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createHmac, timingSafeEqual } from "crypto";
 
 // Dodo Payments webhook (Standard Webhooks signing). Only writer of billing state.
+// Requires DODO_PAYMENTS_WEBHOOK_KEY in the deployed build; 503 means the secret isn't loaded there.
 function verify(secret: string, id: string, ts: string, body: string, header: string) {
   const age = Math.abs(Date.now() / 1000 - Number(ts));
   if (!Number.isFinite(age) || age > 300) return false;
