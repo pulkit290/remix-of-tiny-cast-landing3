@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { AuthLink } from "@/components/auth-link";
 import type { ReactNode } from "react";
 import { ArrowRight, MousePointerClick, Globe, Bug, Timer, KeyRound, Server, Camera, ListOrdered, Radio, AlertTriangle, FileText } from "lucide-react";
 import { Logo } from "@/components/logo";
@@ -58,9 +59,9 @@ function Landing() {
         <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-5 sm:px-6 sm:py-6">
           <Logo />
           <nav className="hidden items-center gap-7 rounded-full bg-paper px-7 py-2.5 text-xs font-bold uppercase text-ink md:flex">
-            <a href="#how" className="story-link">How it works</a><a href="#records" className="story-link">What you get</a><Link to="/about" className="story-link">About</Link><Link to="/login" className="story-link">Sign in</Link>
+            <a href="#how" className="story-link">How it works</a><a href="#records" className="story-link">What you get</a><Link to="/about" className="story-link">About</Link><AuthLink to="/login" className="story-link">Sign in</AuthLink>
           </nav>
-          <Link to="/signup" className="press rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase text-primary-foreground">Get started</Link>
+          <AuthLink to="/signup" className="press rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase text-primary-foreground">Get started</AuthLink>
         </header>
 
         <section className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-14 text-center">
@@ -70,7 +71,7 @@ function Landing() {
             Poolabs launches multiple autonomous AI users in separate browser sessions and makes them interact with your application — and with each other — like real customers.
           </p>
           <div className="reveal reveal-2 mt-9 flex flex-wrap justify-center gap-3">
-            <Link to="/signup" className={pill}>Test my app <ArrowRight className="h-4 w-4" /></Link>
+            <AuthLink to="/signup" className={pill} signedIn={<>Go to dashboard <ArrowRight className="h-4 w-4" /></>}>Test my app <ArrowRight className="h-4 w-4" /></AuthLink>
             <a href="#how" className="press inline-flex items-center rounded-full border-2 border-paper px-7 py-3 font-bold uppercase tracking-wide">See how it works</a>
           </div>
         </section>
@@ -177,7 +178,7 @@ function Landing() {
               ))}
             </div>
             <div className="mt-16 flex justify-center">
-              <Link to="/signup" className={pill}>Test my app <ArrowRight className="h-4 w-4" /></Link>
+              <AuthLink to="/signup" className={pill} signedIn={<>Go to dashboard <ArrowRight className="h-4 w-4" /></>}>Test my app <ArrowRight className="h-4 w-4" /></AuthLink>
             </div>
           </section>
         </div>

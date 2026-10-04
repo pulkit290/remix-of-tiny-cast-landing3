@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/site-shell";
+import { AuthLink } from "@/components/auth-link";
 
 const desc = "Simple Poolabs pricing: $1 per test run, Pro $9/month with 20 runs, Team $19/month with 60 runs.";
 
@@ -36,7 +37,7 @@ function PricingPage() {
             <ul className="mt-5 flex-1 space-y-2 !list-none !pl-0">
               {p.points.map((x) => <li key={x}>✓ {x}</li>)}
             </ul>
-            <Link to="/signup" className="press mt-6 rounded-full bg-ink px-5 py-3 text-center text-xs font-bold uppercase text-paper">Get started</Link>
+            <AuthLink to="/signup" className="press mt-6 rounded-full bg-ink px-5 py-3 text-center text-xs font-bold uppercase text-paper">Get started</AuthLink>
           </div>
         ))}
       </div>
