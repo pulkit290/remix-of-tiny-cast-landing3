@@ -15,7 +15,7 @@ function verify(secret: string, id: string, ts: string, body: string, header: st
 
 type Data = {
   payment_id?: string; subscription_id?: string | null; product_id?: string; status?: string;
-  next_billing_date?: string; metadata?: Record<string, string>;
+  next_billing_date?: string; metadata?: { user_id?: string; kind?: string; quantity?: string };
   customer?: { customer_id?: string; email?: string };
 };
 
