@@ -30,6 +30,7 @@ import { Route as AuthenticatedTestsIdRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedTestsNewRouteImport } from './routes/_authenticated/tests.new'
 import { Route as AuthenticatedRunsIdIndexRouteImport } from './routes/_authenticated/runs.$id.index'
 import { Route as AuthenticatedRunsIdReportRouteImport } from './routes/_authenticated/runs.$id.report'
+import { Route as ApiPublicDodoWebhookRouteImport } from './routes/api/public/dodo/webhook'
 import { Route as ApiPublicWorkerAiRouteImport } from './routes/api/public/worker/ai'
 import { Route as ApiPublicWorkerEventsRouteImport } from './routes/api/public/worker/events'
 
@@ -140,6 +141,11 @@ const AuthenticatedRunsIdReportRoute =
     path: '/runs/$id/report',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicDodoWebhookRoute = ApiPublicDodoWebhookRouteImport.update({
+  id: '/api/public/dodo/webhook',
+  path: '/api/public/dodo/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWorkerAiRoute = ApiPublicWorkerAiRouteImport.update({
   id: '/api/public/worker/ai',
   path: '/api/public/worker/ai',
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/runs/': typeof AuthenticatedRunsIndexRoute
   '/tests/': typeof AuthenticatedTestsIndexRoute
   '/runs/$id/report': typeof AuthenticatedRunsIdReportRoute
+  '/api/public/dodo/webhook': typeof ApiPublicDodoWebhookRoute
   '/api/public/worker/ai': typeof ApiPublicWorkerAiRoute
   '/api/public/worker/events': typeof ApiPublicWorkerEventsRoute
   '/runs/$id/': typeof AuthenticatedRunsIdIndexRoute
@@ -195,6 +202,7 @@ export interface FileRoutesByTo {
   '/runs': typeof AuthenticatedRunsIndexRoute
   '/tests': typeof AuthenticatedTestsIndexRoute
   '/runs/$id/report': typeof AuthenticatedRunsIdReportRoute
+  '/api/public/dodo/webhook': typeof ApiPublicDodoWebhookRoute
   '/api/public/worker/ai': typeof ApiPublicWorkerAiRoute
   '/api/public/worker/events': typeof ApiPublicWorkerEventsRoute
   '/runs/$id': typeof AuthenticatedRunsIdIndexRoute
@@ -221,6 +229,7 @@ export interface FileRoutesById {
   '/_authenticated/runs/': typeof AuthenticatedRunsIndexRoute
   '/_authenticated/tests/': typeof AuthenticatedTestsIndexRoute
   '/_authenticated/runs/$id/report': typeof AuthenticatedRunsIdReportRoute
+  '/api/public/dodo/webhook': typeof ApiPublicDodoWebhookRoute
   '/api/public/worker/ai': typeof ApiPublicWorkerAiRoute
   '/api/public/worker/events': typeof ApiPublicWorkerEventsRoute
   '/_authenticated/runs/$id/': typeof AuthenticatedRunsIdIndexRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/runs/'
     | '/tests/'
     | '/runs/$id/report'
+    | '/api/public/dodo/webhook'
     | '/api/public/worker/ai'
     | '/api/public/worker/events'
     | '/runs/$id/'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/runs'
     | '/tests'
     | '/runs/$id/report'
+    | '/api/public/dodo/webhook'
     | '/api/public/worker/ai'
     | '/api/public/worker/events'
     | '/runs/$id'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/_authenticated/runs/'
     | '/_authenticated/tests/'
     | '/_authenticated/runs/$id/report'
+    | '/api/public/dodo/webhook'
     | '/api/public/worker/ai'
     | '/api/public/worker/events'
     | '/_authenticated/runs/$id/'
@@ -313,6 +325,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   RTokenRoute: typeof RTokenRoute
+  ApiPublicDodoWebhookRoute: typeof ApiPublicDodoWebhookRoute
   ApiPublicWorkerAiRoute: typeof ApiPublicWorkerAiRoute
   ApiPublicWorkerEventsRoute: typeof ApiPublicWorkerEventsRoute
 }
@@ -466,6 +479,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRunsIdReportRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/dodo/webhook': {
+      id: '/api/public/dodo/webhook'
+      path: '/api/public/dodo/webhook'
+      fullPath: '/api/public/dodo/webhook'
+      preLoaderRoute: typeof ApiPublicDodoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/worker/ai': {
       id: '/api/public/worker/ai'
       path: '/api/public/worker/ai'
@@ -524,6 +544,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   RTokenRoute: RTokenRoute,
+  ApiPublicDodoWebhookRoute: ApiPublicDodoWebhookRoute,
   ApiPublicWorkerAiRoute: ApiPublicWorkerAiRoute,
   ApiPublicWorkerEventsRoute: ApiPublicWorkerEventsRoute,
 }
