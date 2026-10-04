@@ -8,6 +8,13 @@
       "when": 1791113512243,
       "tag": "0000_billing_paywall",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791125397568,
+      "tag": "0001_enable_realtime_runs",
+      "breakpoints": true
     }
   ]
 }

@@ -32,6 +32,8 @@ function RunPage() {
       if (error) throw error;
       return data;
     },
+    // Fallback in case live updates are delayed: re-check every 3s while the run is still going.
+    refetchInterval: (q) => (["queued", "starting", "running"].includes(q.state.data?.status ?? "queued") ? 3000 : false),
   });
 
   useEffect(() => {
