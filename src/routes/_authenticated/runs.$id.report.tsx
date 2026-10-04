@@ -8,6 +8,7 @@ import { getRunReport, regenerateRunReport, setReportSharing } from "@/lib/repor
 import { reportToMarkdown, type ReportDoc } from "@/lib/report-format";
 import { ReportView } from "@/components/report-view";
 import { Button } from "@/components/ui/button";
+import { Paywall } from "@/components/paywall";
 
 export const Route = createFileRoute("/_authenticated/runs/$id/report")({
   head: () => ({ meta: [{ title: "Test report — Poolabs" }, { name: "robots", content: "noindex" }] }),
@@ -21,7 +22,7 @@ function ReportPage() {
   const share = useServerFn(setReportSharing);
   const [token, setToken] = useState<string | null | undefined>(undefined);
 
-  const q = useQuery({ queryKey: ["report", id], queryFn: async () => (await load({ data: { runId: id } })) as unknown as { report: ReportDoc | null; reason?: string; shareToken?: string | null; evidenceUrls: Record<string, string> } });
+  const q = useQuery({ queryKey: ["report", id], queryFn: async () => (await load({ data: { runId: id } })) as unknown as { report: ReportDoc | null; reason?: string; locked?: boolean; shareToken?: string | null; evidenceUrls: Record<string, string> } });
 
   const regenM = useMutation({
     mutationFn: () => regen({ data: { runId: id } }),
@@ -47,7 +48,9 @@ function ReportPage() {
     return (
       <div className="mx-auto max-w-2xl">
         <Link to="/runs/$id" params={{ id }} className="font-mono text-xs text-muted-foreground hover:text-foreground">← Back to run</Link>
-        <p className="mt-6 rounded-xl border bg-card p-6 text-sm text-muted-foreground">{data.reason}</p>
+        {data.locked
+          ? <Paywall reason={data.reason ?? ""} returnPath={`/runs/${id}/report`} />
+          : <p className="mt-6 rounded-xl border bg-card p-6 text-sm text-muted-foreground">{data.reason}</p>}
       </div>
     );
 

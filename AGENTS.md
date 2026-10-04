@@ -17,3 +17,4 @@
 - Authenticated pages live under `src/routes/_authenticated/` (client-only gate) and read data via the browser client with RLS.
 - agent_runs/agent_actions/test_issues are written only by the server (service role); users have read-only access.
 - Run status lifecycle: queued → starting (worker accepted) → running → passed/failed/error, or cancelled via `cancelRun`; worker events for a cancelled run are ignored — the app's cancel is final.
+- Payments use Dodo Payments: checkout via `createCheckout` server fn, billing state written only by the signed webhook `/api/public/dodo/webhook`; a run's report unlocks (test_runs.unlocked_at) by spending one plan run or prepaid credit — single source of paywall truth.
