@@ -8,6 +8,7 @@ export function SiteFooter() {
     <footer className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-6 text-center font-mono text-[11px] uppercase text-ink">
       <span>© Poolabs</span>
       <Link to="/about" className={l}>About</Link>
+      <Link to="/pricing" className={l}>Pricing</Link>
       <Link to="/security" className={l}>Security</Link>
       <Link to="/contact" className={l}>Contact</Link>
       <Link to="/privacy" className={l}>Privacy</Link>
