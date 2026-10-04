@@ -51,7 +51,7 @@ function Landing() {
   return (
     <div className="min-h-screen bg-sun p-3 md:p-6">
       <div className="relative overflow-hidden rounded-[2rem] bg-ink text-paper">
-        <div aria-hidden data-parallax="0.35" className="pointer-events-none absolute inset-x-0 top-[-30%]">
+        <div aria-hidden data-parallax="0.2" className="pointer-events-none absolute inset-x-0 top-[-30%]">
           <div className="mx-auto h-[1400px] w-[1400px] rounded-full opacity-25"
             style={{ background: "repeating-radial-gradient(circle, transparent 0 58px, var(--paper) 58px 60px)" }} />
         </div>
