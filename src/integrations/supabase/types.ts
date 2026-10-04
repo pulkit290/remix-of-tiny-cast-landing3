@@ -112,6 +112,45 @@ export type Database = {
           },
         ]
       }
+      billing_accounts: {
+        Row: {
+          dodo_customer_id: string | null
+          dodo_subscription_id: string | null
+          period_end: string | null
+          plan: string
+          run_credits: number
+          runs_included: number
+          runs_used: number
+          subscription_status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          dodo_customer_id?: string | null
+          dodo_subscription_id?: string | null
+          period_end?: string | null
+          plan?: string
+          run_credits?: number
+          runs_included?: number
+          runs_used?: number
+          subscription_status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          dodo_customer_id?: string | null
+          dodo_subscription_id?: string | null
+          period_end?: string | null
+          plan?: string
+          run_credits?: number
+          runs_included?: number
+          runs_used?: number
+          subscription_status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -133,6 +172,30 @@ export type Database = {
           id?: string
           message?: string
           name?: string
+        }
+        Relationships: []
+      }
+      payment_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id: string
+          payload: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -382,6 +445,7 @@ export type Database = {
           started_at: string | null
           status: string
           summary: string | null
+          unlocked_at: string | null
         }
         Insert: {
           completed_at?: string | null
@@ -393,6 +457,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           summary?: string | null
+          unlocked_at?: string | null
         }
         Update: {
           completed_at?: string | null
@@ -404,6 +469,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           summary?: string | null
+          unlocked_at?: string | null
         }
         Relationships: [
           {
