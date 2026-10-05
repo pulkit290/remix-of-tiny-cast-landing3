@@ -308,6 +308,57 @@ export type Database = {
           },
         ]
       }
+      team_invites: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          invited_by: string | null
+          owner_id: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          invited_by?: string | null
+          owner_id: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          invited_by?: string | null
+          owner_id?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          email: string | null
+          owner_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          owner_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          owner_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       test_agents: {
         Row: {
           account_email: string | null
@@ -527,6 +578,7 @@ export type Database = {
       owns_project: { Args: { _project_id: string }; Returns: boolean }
       owns_run: { Args: { _run_id: string }; Returns: boolean }
       owns_scenario: { Args: { _scenario_id: string }; Returns: boolean }
+      team_owner: { Args: { _uid: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
