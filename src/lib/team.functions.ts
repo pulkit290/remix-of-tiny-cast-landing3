@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 // Team writes go through the server (service role); users only read via RLS.
-const SEATS = { none: 1, pro: 3, team: 5 } as const;
+const SEATS = { none: 1, pro: 5, team: 7 } as const;
 
 async function ctxInfo(userId: string) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

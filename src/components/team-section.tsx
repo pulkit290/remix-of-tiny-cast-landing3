@@ -77,7 +77,7 @@ export function TeamSection() {
       </ul>
 
       {canManage && (data.plan === "none"
-        ? <p className="mt-4 text-sm text-muted-foreground">Get Pro (3 users) or Team (5 users) to invite people.</p>
+        ? <p className="mt-4 text-sm text-muted-foreground">Get Pro (5 users) or Team (7 users) to invite people.</p>
         : (
           <form className="mt-4 flex flex-wrap gap-2" onSubmit={(e) => { e.preventDefault(); act(() => invite({ data: { email, role } }), "Invite sent").then(() => setEmail("")); }}>
             <Input type="email" required placeholder="teammate@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} className="min-w-0 flex-1" />

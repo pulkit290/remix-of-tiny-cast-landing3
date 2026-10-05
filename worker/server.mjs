@@ -134,8 +134,22 @@ async function decide(agent, job, obs, history, board) {
   return JSON.parse(String(content).replace(/^```(?:json)?\s*|\s*```$/g, ""));
 }
 
+// Team-plan browser environment. Invalid values are ignored instead of failing the run.
+function contextOptions(adv = {}) {
+  const o = {};
+  if (adv.device === "mobile") Object.assign(o, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3,
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1" });
+  if (adv.device === "tablet") Object.assign(o, { viewport: { width: 820, height: 1180 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+  if (typeof adv.locale === "string" && /^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(adv.locale)) o.locale = adv.locale;
+  if (typeof adv.timezone === "string" && /^[A-Za-z_]+\/[A-Za-z_\/+-]+$/.test(adv.timezone)) o.timezoneId = adv.timezone;
+  const lat = Number(adv.latitude), lon = Number(adv.longitude);
+  if (adv.latitude && adv.longitude && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) { o.geolocation = { latitude: lat, longitude: lon }; o.permissions = ["geolocation"]; }
+  if (adv.colorScheme === "dark") o.colorScheme = "dark";
+  return o;
+}
+
 async function runAgent(browser, job, agent, board, report) {
-  const context = await browser.newContext(); // isolated cookies/storage per AI user
+  const context = await browser.newContext(contextOptions(agent.advanced)); // isolated cookies/storage per AI user
   const page = await context.newPage();
   const sessionId = `ctx-${agent.agentRunId.slice(0, 8)}`;
   const history = [];

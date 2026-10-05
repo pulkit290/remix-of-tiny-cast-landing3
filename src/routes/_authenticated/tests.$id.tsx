@@ -50,7 +50,7 @@ function TestPage() {
 
   function startEdit() {
     setDraft({ name: scenario.name, description: scenario.description ?? "", agents: scenario.test_agents.map((a) => ({
-      id: a.id, name: a.name, role: a.role, goal: a.goal, system_instructions: a.system_instructions ?? "", account_email: a.account_email ?? "" })) });
+      id: a.id, name: a.name, role: a.role, goal: a.goal, system_instructions: a.system_instructions ?? "", account_email: a.account_email ?? "", advanced: (a.advanced ?? {}) as AgentDraft["advanced"] })) });
     setEditing(true);
   }
 
