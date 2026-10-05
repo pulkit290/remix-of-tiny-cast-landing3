@@ -28,6 +28,8 @@ export const getRunReport = createServerFn({ method: "POST" })
       .eq("id", data.runId)
       .single();
     if (error || !run) throw new Error("Run not found");
+    if (run.status === "cancelled")
+      return { report: null, reason: "This run was cancelled before it finished, so there is no full report. No run was charged." };
     if (!["passed", "failed", "error"].includes(run.status))
       return { report: null, reason: "This run has not finished yet, so there is no report." };
     const { unlockRun } = await import("./billing.server");
