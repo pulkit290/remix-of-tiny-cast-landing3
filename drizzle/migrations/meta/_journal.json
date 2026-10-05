@@ -29,6 +29,13 @@
       "when": 1791196502270,
       "tag": "0003_admin_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791197306624,
+      "tag": "0004_agent_advanced_settings",
+      "breakpoints": true
     }
   ]
 }

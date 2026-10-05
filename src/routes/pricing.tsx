@@ -6,8 +6,8 @@ const desc = "Simple Poolabs pricing: $1 per test run, Pro $9/month with 20 runs
 
 const plans = [
   { name: "Pay as you go", price: "$1", per: "per run", points: ["Unlock one full test report", "Screenshots, timeline and evidence", "Exports and share links", "No subscription"] },
-  { name: "Pro", price: "$9", per: "per month", points: ["20 test runs every month", "Up to 3 users", "Full reports, screenshots and exports", "Cancel anytime"], featured: true },
-  { name: "Team", price: "$19", per: "per month", points: ["60 test runs every month", "Up to 5 users", "Full reports, screenshots and exports", "Cancel anytime"] },
+  { name: "Pro", price: "$9", per: "per month", points: ["20 test runs every month", "Up to 5 users", "Full reports, screenshots and exports", "Cancel anytime"], featured: true },
+  { name: "Team", price: "$19", per: "per month", points: ["60 test runs every month", "Up to 7 users", "Full reports, screenshots and exports", "Cancel anytime"] },
 ];
 
 export const Route = createFileRoute("/pricing")({

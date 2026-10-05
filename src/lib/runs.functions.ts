@@ -46,6 +46,12 @@ export const startRun = createServerFn({ method: "POST" })
     const workerSecret = process.env["WORKER_SECRET"];
     if (!workerUrl || !workerSecret) return fail(NOT_CONFIGURED);
 
+    // Advanced browser settings are a Team-plan feature — enforce it here, not just in the UI.
+    const { teamOwnerOf, subscriptionActive } = await import("@/lib/billing.server");
+    const owner = await teamOwnerOf(context.userId);
+    const { data: acc } = await supabaseAdmin.from("billing_accounts").select("plan, subscription_status, period_end").eq("user_id", owner).maybeSingle();
+    const team = subscriptionActive(acc) && acc!.plan === "team";
+
     // The worker runs elsewhere, so it must call back to a publicly reachable app URL.
     const origin = (process.env["PUBLIC_APP_URL"] || new URL(getRequest().url).origin).replace(/\/$/, "");
     const payload = {
@@ -58,6 +64,7 @@ export const startRun = createServerFn({ method: "POST" })
         return {
           agentRunId: ar.id, name: a.name, role: a.role, goal: a.goal,
           instructions: a.system_instructions, accountEmail: a.account_email, accountUsername: a.account_username,
+          advanced: team ? a.advanced : undefined,
         };
       }),
     };

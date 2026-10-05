@@ -366,6 +366,7 @@ export type Database = {
         Row: {
           account_email: string | null
           account_username: string | null
+          advanced: Json
           created_at: string
           goal: string
           id: string
@@ -378,6 +379,7 @@ export type Database = {
         Insert: {
           account_email?: string | null
           account_username?: string | null
+          advanced?: Json
           created_at?: string
           goal: string
           id?: string
@@ -390,6 +392,7 @@ export type Database = {
         Update: {
           account_email?: string | null
           account_username?: string | null
+          advanced?: Json
           created_at?: string
           goal?: string
           id?: string

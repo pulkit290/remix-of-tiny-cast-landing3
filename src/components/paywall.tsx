@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 
 const PLANS = [
   { kind: "payg" as const, name: "One run", price: "$1", note: "Unlock this report" },
-  { kind: "pro" as const, name: "Pro", price: "$9/mo", note: "20 runs a month, 3 users" },
-  { kind: "team" as const, name: "Team", price: "$19/mo", note: "60 runs a month, 5 users" },
+  { kind: "pro" as const, name: "Pro", price: "$9/mo", note: "20 runs a month, 5 users" },
+  { kind: "team" as const, name: "Team", price: "$19/mo", note: "60 runs a month, 7 users" },
 ];
 
 export function BuyButtons({ returnPath }: { returnPath: string }) {
