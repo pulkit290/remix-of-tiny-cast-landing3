@@ -22,6 +22,13 @@
       "when": 1791176602357,
       "tag": "0002_team_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791196502270,
+      "tag": "0003_admin_roles",
+      "breakpoints": true
     }
   ]
 }
