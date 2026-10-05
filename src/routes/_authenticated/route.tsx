@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { LogOut, Settings } from "lucide-react";
+import { LogOut, Settings, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/logo";
@@ -19,8 +19,12 @@ const nav = [
 
 function AccountMenu({ email }: { email: string }) {
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    supabase.from("user_roles").select("role").eq("role", "admin").maybeSingle().then(({ data }) => setIsAdmin(!!data));
+  }, []);
   useEffect(() => {
     const close = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener("mousedown", close);
@@ -45,6 +49,11 @@ function AccountMenu({ email }: { email: string }) {
           <Link to="/settings" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">
             <Settings className="h-3.5 w-3.5" /> Settings
           </Link>
+          {isAdmin && (
+            <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">
+              <Shield className="h-3.5 w-3.5" /> Admin panel
+            </Link>
+          )}
           <button
             onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}
             className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"

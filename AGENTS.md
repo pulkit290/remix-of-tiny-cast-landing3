@@ -20,3 +20,4 @@
 - Payments use Dodo Payments: checkout via `createCheckout` server fn, billing state written only by the signed webhook `/api/public/dodo/webhook`; a run's report unlocks (test_runs.unlocked_at) by spending one plan run or prepaid credit — single source of paywall truth.
 - Teams share data via team_owner(uid) in RLS helpers; team rows are written only by server fns in src/lib/team.functions.ts — keeps one write path.
 - Sign-in is Google-only (email provider disabled).
+- Admin access is checked server-side via user_roles + has_role(); admin data is read only through src/lib/admin.functions.ts — never trust client-side flags.
