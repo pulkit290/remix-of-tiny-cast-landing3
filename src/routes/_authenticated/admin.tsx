@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getAdminOverview, setMessageStatus } from "@/lib/admin.functions";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Sparkles } from "lucide-react";
+import { draftSupportReply, getAdminOverview, setMessageStatus } from "@/lib/admin.functions";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -46,6 +49,7 @@ function Admin() {
                 </div>
               </div>
               <p className="mt-2 whitespace-pre-wrap text-sm">{m.message}</p>
+              <AiReply id={m.id} email={m.email} />
             </div>
           ))}
         </div>
@@ -73,5 +77,33 @@ function Table({ title, head, rows }: { title: string; head: string[]; rows: str
         </table>
       </div>
     </section>
+  );
+}
+
+function AiReply({ id, email }: { id: string; email: string }) {
+  const draft = useServerFn(draftSupportReply);
+  const [reply, setReply] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function run() {
+    setBusy(true);
+    try { setReply((await draft({ data: { id } })).reply); }
+    catch (e) { toast.error(e instanceof Error ? e.message : "AI could not draft a reply"); }
+    finally { setBusy(false); }
+  }
+  return (
+    <div className="mt-3">
+      {!reply ? (
+        <Button size="sm" variant="secondary" onClick={run} disabled={busy}><Sparkles className="h-3.5 w-3.5" /> {busy ? "Writing…" : "Draft reply with AI"}</Button>
+      ) : (
+        <div className="space-y-2">
+          <textarea value={reply} onChange={(e) => setReply(e.target.value)} rows={7} className="w-full rounded-md border bg-background p-3 text-sm" />
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" onClick={() => { navigator.clipboard.writeText(reply); toast.success("Reply copied"); }}>Copy</Button>
+            <Button size="sm" variant="outline" asChild><a href={`mailto:${email}?subject=${encodeURIComponent("Re: your message to Poolabs")}&body=${encodeURIComponent(reply)}`}>Open in email</a></Button>
+            <Button size="sm" variant="ghost" onClick={run} disabled={busy}>{busy ? "Writing…" : "Rewrite"}</Button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
