@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { workerStatus } from "@/lib/runs.functions";
 import { getBilling } from "@/lib/billing.functions";
 import { BuyButtons } from "@/components/paywall";
+import { TeamSection } from "@/components/team-section";
 
 function BillingSection() {
   const load = useServerFn(getBilling);
@@ -48,6 +49,7 @@ function Settings() {
         <p className="mt-2 font-mono text-sm text-muted-foreground">{user?.email}</p>
       </section>
       <BillingSection />
+      <TeamSection />
       <section className="rounded-xl border bg-card p-6">
         <div className="flex items-center justify-between">
           <h2 className="font-medium">Browser worker</h2>
