@@ -1,0 +1,2 @@
+ALTER TABLE public.test_agents ADD COLUMN advanced jsonb NOT NULL DEFAULT '{}'::jsonb;
+COMMENT ON COLUMN public.test_agents.advanced IS 'Team-plan browser settings (locale, timezone, geolocation, device). Only applied by startRun when the team owner has an active Team plan.';
