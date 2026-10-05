@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { StatusBadge, timeAgo } from "@/components/status-badge";
 
@@ -9,6 +10,14 @@ export const Route = createFileRoute("/_authenticated/runs/")({
 });
 
 function Runs() {
+  const qc = useQueryClient();
+  // Live: new runs and status changes appear without a reload.
+  useEffect(() => {
+    const ch = supabase.channel("runs-list")
+      .on("postgres_changes", { event: "*", schema: "public", table: "test_runs" }, () => qc.invalidateQueries({ queryKey: ["runs"] }))
+      .subscribe();
+    return () => { void supabase.removeChannel(ch); };
+  }, [qc]);
   const { data, isLoading } = useQuery({
     queryKey: ["runs"],
     queryFn: async () => {
@@ -17,6 +26,7 @@ function Runs() {
       if (error) throw error;
       return data;
     },
+    refetchInterval: (q) => (q.state.data?.some((r) => ["queued", "starting", "running"].includes(r.status)) ? 5000 : false),
   });
   return (
     <div className="mx-auto max-w-5xl">
