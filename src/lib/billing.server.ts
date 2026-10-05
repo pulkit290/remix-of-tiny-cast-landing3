@@ -25,6 +25,9 @@ export async function unlockRun(runId: string, userId: string): Promise<boolean>
   const { data: run } = await supabaseAdmin.from("test_runs").select("id, unlocked_at").eq("id", runId).single();
   if (!run) return false;
   if (run.unlocked_at) return true;
+  // Teammates spend the team owner's plan.
+  const { data: tm } = await supabaseAdmin.from("team_members").select("owner_id").eq("user_id", userId).maybeSingle();
+  if (tm?.owner_id) userId = tm.owner_id;
   const { data: acc } = await supabaseAdmin.from("billing_accounts").select("*").eq("user_id", userId).maybeSingle();
   if (!acc) return false;
   let spent = false;
@@ -43,4 +46,9 @@ export async function unlockRun(runId: string, userId: string): Promise<boolean>
   if (!spent) return false;
   await supabaseAdmin.from("test_runs").update({ unlocked_at: new Date().toISOString() }).eq("id", runId).is("unlocked_at", null);
   return true;
+}
+
+export async function teamOwnerOf(userId: string): Promise<string> {
+  const { data } = await supabaseAdmin.from("team_members").select("owner_id").eq("user_id", userId).maybeSingle();
+  return data?.owner_id ?? userId;
 }

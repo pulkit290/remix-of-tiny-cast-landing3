@@ -6,7 +6,9 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 export const getBilling = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data } = await context.supabase.from("billing_accounts").select("*").eq("user_id", context.userId).maybeSingle();
+    const { data: owner } = await context.supabase.rpc("team_owner", { _uid: context.userId });
+    const payer = (owner as string | null) ?? context.userId;
+    const { data } = await context.supabase.from("billing_accounts").select("*").eq("user_id", payer).maybeSingle();
     const { subscriptionActive } = await import("./billing.server");
     const active = subscriptionActive(data);
     return {
@@ -17,6 +19,7 @@ export const getBilling = createServerFn({ method: "GET" })
       runsLeft: active ? Math.max(0, data!.runs_included - data!.runs_used) : 0,
       runsIncluded: active ? data!.runs_included : 0,
       credits: data?.run_credits ?? 0,
+      isTeamOwner: payer === context.userId,
     };
   });
 
@@ -31,7 +34,9 @@ export const createCheckout = createServerFn({ method: "POST" })
     const key = process.env["DODO_PAYMENTS_API_KEY"];
     const productId = process.env[{ payg: "DODO_PRODUCT_PAYG", pro: "DODO_PRODUCT_PRO", team: "DODO_PRODUCT_TEAM" }[data.kind]];
     if (!key || !productId) throw new Error("Payments are not set up yet. Please try again later.");
-    const { dodoBase } = await import("./billing.server");
+    const { dodoBase, teamOwnerOf } = await import("./billing.server");
+    const payer = await teamOwnerOf(context.userId);
+    if (payer !== context.userId && data.kind !== "payg") throw new Error("Only the team owner can change the plan.");
     const origin = (process.env["PUBLIC_APP_URL"] || new URL(getRequest().url).origin).replace(/\/$/, "");
     const email = (context.claims as { email?: string }).email;
     const res = await fetch(`${dodoBase()}/checkouts`, {
@@ -41,7 +46,7 @@ export const createCheckout = createServerFn({ method: "POST" })
         product_cart: [{ product_id: productId, quantity: data.kind === "payg" ? data.quantity : 1 }],
         ...(email ? { customer: { email } } : {}),
         return_url: `${origin}${data.returnPath}${data.returnPath.includes("?") ? "&" : "?"}paid=1`,
-        metadata: { user_id: context.userId, kind: data.kind, quantity: String(data.kind === "payg" ? data.quantity : 1) },
+        metadata: { user_id: payer, kind: data.kind, quantity: String(data.kind === "payg" ? data.quantity : 1) },
       }),
     });
     if (!res.ok) {
