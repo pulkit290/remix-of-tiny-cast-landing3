@@ -7,7 +7,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Vercel sets VERCEL=1 during its builds; build for Vercel there, Lovable's default everywhere else.
-const onVercel = !!process.env.VERCEL;
+const onVercel = !!process.env["VERCEL"];
 
 export default defineConfig({
   tanstackStart: {
