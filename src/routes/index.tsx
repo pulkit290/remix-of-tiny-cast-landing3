@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 import { ArrowRight, MousePointerClick, Globe, Bug, Timer, KeyRound, Server, Camera, ListOrdered, Radio, AlertTriangle, FileText } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { SiteFooter } from "@/components/site-shell";
-import demoVideo from "@/assets/videos/poolabs-demo.mp4.asset.json";
+// Served as a plain static file from public/ so it plays on every host (Lovable and Vercel).
+const demoVideoUrl = "/videos/poolabs-demo.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -81,7 +82,7 @@ function Landing() {
         <section className="relative z-10 mx-auto max-w-4xl px-6 pb-24">
           <p className="reveal text-center font-mono text-xs uppercase tracking-[0.3em] text-primary">See it in action</p>
           <div className="reveal reveal-1 mt-6 overflow-hidden rounded-[2rem] border border-paper/15 shadow-2xl">
-            <video src={demoVideo.url} controls playsInline preload="metadata" className="block aspect-video w-full bg-ink" />
+            <video src={demoVideoUrl} controls playsInline preload="metadata" className="block aspect-video w-full bg-ink" />
           </div>
         </section>
 

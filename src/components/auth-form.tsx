@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 
@@ -11,10 +11,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   async function google() {
     setBusy(true);
-    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (r.error) { setBusy(false); toast.error(r.error.message ?? "Google sign-in failed"); return; }
-    if (r.redirected) return;
-    navigate({ to: "/dashboard" });
+    // Uses the project's own Google OAuth credentials, so it works on any host (Lovable or Vercel).
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
+    });
+    if (error) { setBusy(false); toast.error(error.message ?? "Google sign-in failed"); return; }
+    // Browser is redirected to Google; on return the session is picked up from the URL.
+    void navigate;
   }
 
   return (
