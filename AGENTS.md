@@ -21,3 +21,4 @@
 - Teams share data via team_owner(uid) in RLS helpers; team rows are written only by server fns in src/lib/team.functions.ts — keeps one write path.
 - Sign-in is Google-only (email provider disabled).
 - Admin access is checked server-side via user_roles + has_role(); admin data is read only through src/lib/admin.functions.ts — never trust client-side flags.
+- Build target: Lovable/Cloudflare by default; vite.config.ts switches nitro to the `vercel` preset only when VERCEL is set — so one codebase deploys to both.
