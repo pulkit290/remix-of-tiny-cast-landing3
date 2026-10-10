@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 import { ArrowRight, MousePointerClick, Globe, Bug, Timer, KeyRound, Server, Camera, ListOrdered, Radio, AlertTriangle, FileText } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { SiteFooter } from "@/components/site-shell";
-import demoVideo from "@/assets/videos/poolabs-demo.mp4.asset.json";
+// Served as a plain static file from public/ so it plays on every host (Lovable and Vercel).
+const demoVideoUrl = "/videos/poolabs-demo.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
