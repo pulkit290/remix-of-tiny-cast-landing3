@@ -19,6 +19,7 @@
 - Run status lifecycle: queued → starting (worker accepted) → running → passed/failed/error, or cancelled via `cancelRun`; worker events for a cancelled run are ignored — the app's cancel is final.
 - Payments use Dodo Payments: checkout via `createCheckout` server fn, billing state written only by the signed webhook `/api/public/dodo/webhook`; a run's report unlocks (test_runs.unlocked_at) by spending one plan run or prepaid credit — single source of paywall truth.
 - Teams share data via team_owner(uid) in RLS helpers; team rows are written only by server fns in src/lib/team.functions.ts — keeps one write path.
-- Sign-in is Google-only (email provider disabled).
+- Sign-in is Google-only (email provider disabled), via supabase.auth.signInWithOAuth with the project's own Google credentials — so it works on non-Lovable hosts like Vercel; don't switch back to the Lovable-managed flow.
+- Large public media (demo video) is served from public/ as static files, not Lovable asset pointers — so it plays on any host.
 - Admin access is checked server-side via user_roles + has_role(); admin data is read only through src/lib/admin.functions.ts — never trust client-side flags.
 - Build target: Lovable/Cloudflare by default; vite.config.ts switches nitro to the `vercel` preset only when VERCEL is set — so one codebase deploys to both.
