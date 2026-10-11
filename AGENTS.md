@@ -18,6 +18,7 @@
 - agent_runs/agent_actions/test_issues are written only by the server (service role); users have read-only access.
 - Run status lifecycle: queued → starting (worker accepted) → running → passed/failed/error, or cancelled via `cancelRun`; worker events for a cancelled run are ignored — the app's cancel is final.
 - Payments use Dodo Payments: checkout via `createCheckout` server fn, billing state written only by the signed webhook `/api/public/dodo/webhook`; a run's report unlocks (test_runs.unlocked_at) by spending one plan run or prepaid credit — single source of paywall truth.
+- Report data (test_reports, test_issues, screenshots, evidence storage) is readable only when run_unlocked(run) is true, and users can only insert queued runs, never update them — so the paywall can't be bypassed from the browser.
 - Teams share data via team_owner(uid) in RLS helpers; team rows are written only by server fns in src/lib/team.functions.ts — keeps one write path.
 - Sign-in is Google-only (email provider disabled), via supabase.auth.signInWithOAuth with the project's own Google credentials — so it works on non-Lovable hosts like Vercel; don't switch back to the Lovable-managed flow.
 - Large public media (demo video) is served from public/ as static files, not Lovable asset pointers — so it plays on any host.
