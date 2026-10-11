@@ -609,6 +609,7 @@ export type Database = {
       owns_project: { Args: { _project_id: string }; Returns: boolean }
       owns_run: { Args: { _run_id: string }; Returns: boolean }
       owns_scenario: { Args: { _scenario_id: string }; Returns: boolean }
+      run_unlocked: { Args: { _run_id: string }; Returns: boolean }
       team_owner: { Args: { _uid: string }; Returns: string }
     }
     Enums: {

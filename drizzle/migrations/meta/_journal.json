@@ -36,6 +36,13 @@
       "when": 1791197306624,
       "tag": "0004_agent_advanced_settings",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791735748574,
+      "tag": "0005_harden_paywall_rls",
+      "breakpoints": true
     }
   ]
 }
