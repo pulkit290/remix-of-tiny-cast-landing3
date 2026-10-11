@@ -23,4 +23,5 @@
 - Sign-in is Google-only (email provider disabled), via supabase.auth.signInWithOAuth with the project's own Google credentials — so it works on non-Lovable hosts like Vercel; don't switch back to the Lovable-managed flow.
 - Large public media (demo video) is served from public/ as static files, not Lovable asset pointers — so it plays on any host.
 - Admin access is checked server-side via user_roles + has_role(); admin data is read only through src/lib/admin.functions.ts — never trust client-side flags.
+- On non-Lovable hosts, src/server.ts forwards /_serverFn/* and /api/* to UPSTREAM_APP_URL (the Lovable-published app) — private backend keys only exist there.
 - Build target: Lovable/Cloudflare by default; vite.config.ts switches nitro to the `vercel` preset only when VERCEL is set — so one codebase deploys to both.

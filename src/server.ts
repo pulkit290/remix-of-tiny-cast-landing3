@@ -62,7 +62,7 @@ async function proxyToUpstream(request: Request): Promise<Response | null> {
   const res = await fetch(target, {
     method: request.method,
     headers,
-    body: hasBody ? await request.arrayBuffer() : undefined,
+    body: hasBody ? await request.arrayBuffer() : null,
     redirect: "manual",
   });
   const out = new Headers(res.headers);
