@@ -44,9 +44,38 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+// On hosts without the backend's private keys (e.g. Vercel), UPSTREAM_APP_URL points at the
+// Lovable-published copy of this app; server calls are forwarded there so payments, runs,
+// reports and admin keep working. Pages still render on this host.
+async function proxyToUpstream(request: Request): Promise<Response | null> {
+  const upstream = process.env["UPSTREAM_APP_URL"];
+  if (!upstream) return null;
+  const url = new URL(request.url);
+  if (!url.pathname.startsWith("/_serverFn/") && !url.pathname.startsWith("/api/")) return null;
+  const target = new URL(url.pathname + url.search, upstream);
+  if (target.host === url.host) return null; // never loop to ourselves
+  const headers = new Headers(request.headers);
+  headers.delete("host");
+  headers.delete("referer");
+  if (headers.has("origin")) headers.set("origin", target.origin);
+  const hasBody = request.method !== "GET" && request.method !== "HEAD";
+  const res = await fetch(target, {
+    method: request.method,
+    headers,
+    body: hasBody ? await request.arrayBuffer() : null,
+    redirect: "manual",
+  });
+  const out = new Headers(res.headers);
+  out.delete("content-encoding");
+  out.delete("content-length");
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers: out });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const proxied = await proxyToUpstream(request);
+      if (proxied) return proxied;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
