@@ -73,12 +73,12 @@ export const setReportSharing = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ runId: z.string().uuid(), enabled: z.boolean() }).parse(d))
   .handler(async ({ data, context }) => {
+    const { data: run } = await context.supabase.from("test_runs").select("unlocked_at").eq("id", data.runId).single();
+    if (!run?.unlocked_at) throw new Error(LOCKED);
     const { data: row, error } = await context.supabase
       .from("test_reports").select("id, share_token").eq("test_run_id", data.runId).maybeSingle();
     if (error) throw new Error("Report not found");
     if (!row) throw new Error("Generate the report first.");
-    const { data: run } = await context.supabase.from("test_runs").select("unlocked_at").eq("id", data.runId).single();
-    if (!run?.unlocked_at) throw new Error(LOCKED);
     const token = data.enabled ? (row.share_token ?? crypto.randomUUID().replace(/-/g, "")) : null;
     const { error: upErr } = await context.supabase
       .from("test_reports").update({ share_token: token }).eq("id", row.id);
