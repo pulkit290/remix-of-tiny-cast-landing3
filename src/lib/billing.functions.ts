@@ -50,7 +50,10 @@ export const createCheckout = createServerFn({ method: "POST" })
       }),
     });
     if (!res.ok) {
-      console.error("dodo checkout failed", res.status, await res.text());
+      const body = await res.text();
+      console.error("dodo checkout failed", res.status, body);
+      if (body.includes("MERCHANT_NOT_LIVE"))
+        throw new Error("Payments aren't switched on yet. Please try again soon or contact us.");
       throw new Error(`Could not open checkout (HTTP ${res.status}).`);
     }
     const json = (await res.json()) as { checkout_url?: string };
