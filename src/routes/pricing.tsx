@@ -41,6 +41,14 @@ function PricingPage() {
           </div>
         ))}
       </div>
+      <h2>How testing works</h2>
+      <p>You add your own website and describe what to check. AI users open it in a normal web browser and use it the way a person would: clicking buttons, filling in forms and moving between pages. Then you get a report showing what worked, what broke, and screenshots of each step.</p>
+      <ul>
+        <li>Only test websites you own or have written permission to test.</li>
+        <li>Poolabs doesn't scrape or collect data from the sites it tests. It only saves screenshots and notes for your own report.</li>
+        <li>Poolabs doesn't get around logins, paywalls, CAPTCHAs or other access limits. If a test needs to sign in, you give it your own test account.</li>
+        <li>Each run is a short session that you start yourself, never a nonstop crawl.</li>
+      </ul>
       <h2>Questions</h2>
       <p><strong>Do unused runs carry over?</strong> Plan runs reset each month. Pay-as-you-go runs never expire.</p>
       <p><strong>How do I pay?</strong> Payments are handled securely by Dodo Payments. You can buy from Settings → Plan & billing, or from any locked report.</p>
