@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { oauthRedirectTo } from "@/lib/auth-relay";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 
@@ -14,7 +15,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     // Uses the project's own Google OAuth credentials, so it works on any host (Lovable or Vercel).
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: oauthRedirectTo() },
     });
     if (error) { setBusy(false); toast.error(error.message ?? "Google sign-in failed"); return; }
     // Browser is redirected to Google; on return the session is picked up from the URL.
