@@ -23,6 +23,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthRelayRouteImport } from './routes/auth.relay'
 import { Route as RTokenRouteImport } from './routes/r.$token'
 import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects.index'
 import { Route as AuthenticatedProjectsIdRouteImport } from './routes/_authenticated/projects.$id'
@@ -105,6 +106,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthRelayRoute = AuthRelayRouteImport.update({
+  id: '/auth/relay',
+  path: '/auth/relay',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RTokenRoute = RTokenRouteImport.update({
   id: '/r/$token',
   path: '/r/$token',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/auth/relay': typeof AuthRelayRoute
   '/r/$token': typeof RTokenRoute
   '/projects/$id': typeof AuthenticatedProjectsIdRoute
   '/tests/$id': typeof AuthenticatedTestsIdRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/auth/relay': typeof AuthRelayRoute
   '/r/$token': typeof RTokenRoute
   '/projects/$id': typeof AuthenticatedProjectsIdRoute
   '/tests/$id': typeof AuthenticatedTestsIdRoute
@@ -239,6 +247,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/auth/relay': typeof AuthRelayRoute
   '/r/$token': typeof RTokenRoute
   '/_authenticated/projects/$id': typeof AuthenticatedProjectsIdRoute
   '/_authenticated/tests/$id': typeof AuthenticatedTestsIdRoute
@@ -268,6 +277,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/settings'
+    | '/auth/relay'
     | '/r/$token'
     | '/projects/$id'
     | '/tests/$id'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/settings'
+    | '/auth/relay'
     | '/r/$token'
     | '/projects/$id'
     | '/tests/$id'
@@ -323,6 +334,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/settings'
+    | '/auth/relay'
     | '/r/$token'
     | '/_authenticated/projects/$id'
     | '/_authenticated/tests/$id'
@@ -349,6 +361,7 @@ export interface RootRouteChildren {
   SecurityRoute: typeof SecurityRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  AuthRelayRoute: typeof AuthRelayRoute
   RTokenRoute: typeof RTokenRoute
   ApiPublicDodoWebhookRoute: typeof ApiPublicDodoWebhookRoute
   ApiPublicWorkerAiRoute: typeof ApiPublicWorkerAiRoute
@@ -454,6 +467,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/auth/relay': {
+      id: '/auth/relay'
+      path: '/auth/relay'
+      fullPath: '/auth/relay'
+      preLoaderRoute: typeof AuthRelayRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/r/$token': {
       id: '/r/$token'
@@ -585,6 +605,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityRoute: SecurityRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  AuthRelayRoute: AuthRelayRoute,
   RTokenRoute: RTokenRoute,
   ApiPublicDodoWebhookRoute: ApiPublicDodoWebhookRoute,
   ApiPublicWorkerAiRoute: ApiPublicWorkerAiRoute,
