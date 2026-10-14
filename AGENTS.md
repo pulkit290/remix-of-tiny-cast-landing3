@@ -25,3 +25,4 @@
 - Admin access is checked server-side via user_roles + has_role(); admin data is read only through src/lib/admin.functions.ts — never trust client-side flags.
 - On non-Lovable hosts, src/server.ts forwards /_serverFn/* and /api/* to UPSTREAM_APP_URL (the Lovable-published app) — private backend keys only exist there.
 - Build target: Lovable/Cloudflare by default; vite.config.ts switches nitro to the `vercel` preset only when VERCEL is set — so one codebase deploys to both.
+- Google sign-in from non-Lovable hosts returns via /auth/relay on the Lovable site, which forwards the session only to hosts in src/lib/auth-relay.ts — Lovable manages the allowed return addresses and they can't be edited.
