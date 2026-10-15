@@ -71,14 +71,25 @@ async function proxyToUpstream(request: Request): Promise<Response | null> {
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers: out });
 }
 
+// Security headers on every response; HSTS forces HTTPS for returning visitors.
+function withSecurityHeaders(res: Response): Response {
+  const h = new Headers(res.headers);
+  h.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  h.set("X-Content-Type-Options", "nosniff");
+  h.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  h.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  if (!h.has("X-Frame-Options")) h.set("X-Frame-Options", "SAMEORIGIN");
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const proxied = await proxyToUpstream(request);
-      if (proxied) return proxied;
+      if (proxied) return withSecurityHeaders(proxied);
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
