@@ -7,7 +7,9 @@ import { PageShell } from "@/components/site-shell";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/contact" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/contact" },
       { title: "Contact — Poolabs" },
       { name: "description", content: "Get in touch with the Poolabs team." },
       { property: "og:title", content: "Contact — Poolabs" },

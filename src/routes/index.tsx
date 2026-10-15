@@ -9,7 +9,9 @@ const demoVideoUrl = "/videos/poolabs-demo.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/" },
       { title: "Poolabs — Put AI users inside your app before real users do" },
       { name: "description", content: "Poolabs launches multiple autonomous AI users in separate browser sessions to test real multi-user workflows." },
       { property: "og:title", content: "Poolabs — Multi-user AI testing" },

@@ -3,7 +3,9 @@ import { PageShell } from "@/components/site-shell";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/terms" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/terms" },
       { title: "Terms of Service — Poolabs" },
       { name: "description", content: "The terms for using Poolabs." },
       { property: "og:title", content: "Terms of Service — Poolabs" },

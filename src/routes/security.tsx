@@ -3,7 +3,9 @@ import { PageShell } from "@/components/site-shell";
 
 export const Route = createFileRoute("/security")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/security" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/security" },
       { title: "Security — Poolabs" },
       { name: "description", content: "How Poolabs protects your account, test data and test credentials." },
       { property: "og:title", content: "Security — Poolabs" },
