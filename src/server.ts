@@ -78,7 +78,6 @@ function withSecurityHeaders(res: Response): Response {
   h.set("X-Content-Type-Options", "nosniff");
   h.set("Referrer-Policy", "strict-origin-when-cross-origin");
   h.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-  if (!h.has("X-Frame-Options")) h.set("X-Frame-Options", "SAMEORIGIN");
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
 }
 
