@@ -12,7 +12,9 @@ const plans = [
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/pricing" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/pricing" },
       { title: "Pricing — Poolabs" },
       { name: "description", content: desc },
       { property: "og:title", content: "Pricing — Poolabs" },

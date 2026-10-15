@@ -30,6 +30,11 @@ export function PageShell({ title, children }: { title: string; children: ReactN
         </header>
         <div className="mx-2 mt-8 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-12 text-ink md:mx-10">
           <div className="mx-auto max-w-3xl">
+            <nav aria-label="Breadcrumb" className="mb-4 font-mono text-[11px] uppercase">
+              <Link to="/" className="hover:underline underline-offset-4">Home</Link>
+              <span className="mx-2" aria-hidden>›</span>
+              <span aria-current="page">{title}</span>
+            </nav>
             <h1 className="text-6xl">{title}</h1>
             <div className="mt-6 space-y-4 text-sm leading-relaxed [&_h2]:mt-8 [&_h2]:text-3xl [&_ul]:list-disc [&_ul]:pl-5">{children}</div>
           </div>

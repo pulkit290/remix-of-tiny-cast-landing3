@@ -3,7 +3,9 @@ import { PageShell } from "@/components/site-shell";
 
 export const Route = createFileRoute("/cookies")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.poolabs.in/cookies" }],
     meta: [
+      { property: "og:url", content: "https://www.poolabs.in/cookies" },
       { title: "Cookie Policy — Poolabs" },
       { name: "description", content: "How Poolabs uses cookies and browser storage." },
       { property: "og:title", content: "Cookie Policy — Poolabs" },
