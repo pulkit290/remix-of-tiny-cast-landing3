@@ -12,13 +12,20 @@ export const Route = createFileRoute("/")({
     links: [{ rel: "canonical", href: "https://www.poolabs.in/" }],
     meta: [
       { property: "og:url", content: "https://www.poolabs.in/" },
-      { title: "Poolabs — Put AI users inside your app before real users do" },
+      { title: "Poolabs — Multi-User AI Testing in Real Browsers" },
       { name: "description", content: "Poolabs launches multiple autonomous AI users in separate browser sessions to test real multi-user workflows." },
       { property: "og:title", content: "Poolabs — Multi-user AI testing" },
       { property: "og:description", content: "Autonomous AI users interact with each other inside your app to test multi-role flows in real browsers." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://www.poolabs.in/og-image.jpg" },
+      { name: "twitter:image", content: "https://www.poolabs.in/og-image.jpg" },
     ],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify([
+      { "@context": "https://schema.org", "@type": "Organization", name: "Poolabs", url: "https://www.poolabs.in/", logo: "https://www.poolabs.in/favicon.png" },
+      { "@context": "https://schema.org", "@type": "WebSite", name: "Poolabs", url: "https://www.poolabs.in/" },
+      { "@context": "https://schema.org", "@type": "SoftwareApplication", name: "Poolabs", applicationCategory: "DeveloperApplication", operatingSystem: "Web", url: "https://www.poolabs.in/", offers: { "@type": "Offer", price: "1", priceCurrency: "USD" } },
+    ]) }],
   }),
   component: Landing,
 });
@@ -106,7 +113,7 @@ function Landing() {
           </div>
         </section>
 
-        <div className="relative z-10 mx-2 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-14 text-ink md:mx-10">
+        <main className="relative z-10 mx-2 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-14 text-ink md:mx-10">
           <section id="how" className="mx-auto max-w-5xl">
             <h2 data-reveal className="text-4xl sm:text-5xl">How it works</h2>
             <ol className="relative mt-10 space-y-8 border-l-4 border-accent pl-8">
@@ -192,7 +199,7 @@ function Landing() {
               <AuthLink to="/signup" className={pill} signedIn={<>Go to dashboard <ArrowRight className="h-4 w-4" /></>}>Test my app <ArrowRight className="h-4 w-4" /></AuthLink>
             </div>
           </section>
-        </div>
+        </main>
       </div>
       <SiteFooter />
     </div>

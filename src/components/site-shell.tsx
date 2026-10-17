@@ -28,7 +28,7 @@ export function PageShell({ title, children }: { title: string; children: ReactN
           <Link to="/"><Logo /></Link>
           <AuthLink to="/login" className="rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase text-primary-foreground">Sign in</AuthLink>
         </header>
-        <div className="mx-2 mt-8 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-12 text-ink md:mx-10">
+        <main className="mx-2 mt-8 rounded-t-[2rem] border-t-[10px] border-accent bg-paper px-6 pb-20 pt-12 text-ink md:mx-10">
           <div className="mx-auto max-w-3xl">
             <nav aria-label="Breadcrumb" className="mb-4 font-mono text-[11px] uppercase">
               <Link to="/" className="hover:underline underline-offset-4">Home</Link>
@@ -38,7 +38,7 @@ export function PageShell({ title, children }: { title: string; children: ReactN
             <h1 className="text-6xl">{title}</h1>
             <div className="mt-6 space-y-4 text-sm leading-relaxed [&_h2]:mt-8 [&_h2]:text-3xl [&_ul]:list-disc [&_ul]:pl-5">{children}</div>
           </div>
-        </div>
+        </main>
       </div>
       <SiteFooter />
     </div>

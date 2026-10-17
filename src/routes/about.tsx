@@ -11,7 +11,9 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About — Poolabs" },
       { property: "og:description", content: "Why Poolabs exists and how it tests multi-user apps with AI users in real browsers." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://www.poolabs.in/og-image.jpg" },
+      { name: "twitter:image", content: "https://www.poolabs.in/og-image.jpg" },
     ],
   }),
   component: () => (

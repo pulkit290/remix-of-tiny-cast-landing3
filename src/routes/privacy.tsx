@@ -11,7 +11,9 @@ export const Route = createFileRoute("/privacy")({
       { property: "og:title", content: "Privacy Policy — Poolabs" },
       { property: "og:description", content: "How Poolabs collects, uses and protects your data." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://www.poolabs.in/og-image.jpg" },
+      { name: "twitter:image", content: "https://www.poolabs.in/og-image.jpg" },
     ],
   }),
   component: () => (
