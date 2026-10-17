@@ -11,7 +11,9 @@ export const Route = createFileRoute("/security")({
       { property: "og:title", content: "Security — Poolabs" },
       { property: "og:description", content: "How Poolabs protects your account, test data and test credentials." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://www.poolabs.in/og-image.jpg" },
+      { name: "twitter:image", content: "https://www.poolabs.in/og-image.jpg" },
     ],
   }),
   component: () => (
