@@ -1,0 +1,19 @@
+# Poolabs
+
+> Poolabs is multi-user AI testing for web apps: it launches several autonomous AI users, each in its own real browser session with its own login, and has them use your app at the same time — and with each other — to find bugs that only appear when more than one person is involved.
+
+You describe each AI user's goal in plain words (no test scripts). The AI decides what to click and type. Every run records an action timeline, live browser state, screenshots, issues with the steps that led to them, and a pass/fail report. Browsers run on a separate worker service; test account passwords stay on that worker. Pricing starts at $1 per run, with Pro ($9/month) and Team ($19/month) plans.
+
+## Pages
+
+- [Home](https://www.poolabs.in/): What Poolabs does, how it works, and what every run records.
+- [Pricing](https://www.poolabs.in/pricing): Pay-as-you-go and monthly plans, and how testing works.
+- [About](https://www.poolabs.in/about): Why Poolabs exists.
+- [Security](https://www.poolabs.in/security): How credentials, data and browsers are handled.
+- [Contact](https://www.poolabs.in/contact): Get in touch with the team.
+
+## Optional
+
+- [Privacy](https://www.poolabs.in/privacy): Privacy policy.
+- [Terms](https://www.poolabs.in/terms): Terms of service.
+- [Cookies](https://www.poolabs.in/cookies): Cookie policy.
