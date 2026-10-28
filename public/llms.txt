@@ -16,4 +16,5 @@ You describe each AI user's goal in plain words (no test scripts). The AI decide
 
 - [Privacy](https://www.poolabs.in/privacy): Privacy policy.
 - [Terms](https://www.poolabs.in/terms): Terms of service.
+- [Refund Policy](https://www.poolabs.in/refund): When and how refunds work.
 - [Cookies](https://www.poolabs.in/cookies): Cookie policy.
