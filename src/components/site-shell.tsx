@@ -14,6 +14,7 @@ export function SiteFooter() {
       <Link to="/contact" className={l}>Contact</Link>
       <Link to="/privacy" className={l}>Privacy</Link>
       <Link to="/terms" className={l}>Terms</Link>
+      <Link to="/refund" className={l}>Refunds</Link>
       <Link to="/cookies" className={l}>Cookies</Link>
       <AuthLink to="/login" className={l}>Sign in</AuthLink>
     </footer>

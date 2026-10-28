@@ -17,6 +17,7 @@ import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundRouteImport } from './routes/refund'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -75,6 +76,11 @@ const PricingRoute = PricingRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundRoute = RefundRouteImport.update({
+  id: '/refund',
+  path: '/refund',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -189,6 +195,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -218,6 +225,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -249,6 +257,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -280,6 +289,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/pricing'
     | '/privacy'
+    | '/refund'
     | '/security'
     | '/signup'
     | '/sitemap.xml'
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/pricing'
     | '/privacy'
+    | '/refund'
     | '/security'
     | '/signup'
     | '/sitemap.xml'
@@ -339,6 +350,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/pricing'
     | '/privacy'
+    | '/refund'
     | '/security'
     | '/signup'
     | '/sitemap.xml'
@@ -370,6 +382,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundRoute: typeof RefundRoute
   SecurityRoute: typeof SecurityRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund': {
+      id: '/refund'
+      path: '/refund'
+      fullPath: '/refund'
+      preLoaderRoute: typeof RefundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -622,6 +642,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundRoute: RefundRoute,
   SecurityRoute: SecurityRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

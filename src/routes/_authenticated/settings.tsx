@@ -6,6 +6,7 @@ import { workerStatus } from "@/lib/runs.functions";
 import { getBilling } from "@/lib/billing.functions";
 import { BuyButtons } from "@/components/paywall";
 import { TeamSection } from "@/components/team-section";
+import { DeleteAccountSection } from "@/components/delete-account";
 
 function BillingSection() {
   const load = useServerFn(getBilling);
@@ -63,6 +64,7 @@ function Settings() {
           The worker code lives in the <span className="font-mono text-foreground">worker/</span> folder of this project. Deploy it, then add its address and shared secret to this app.
         </p>
       </section>
+      <DeleteAccountSection />
     </div>
   );
 }
